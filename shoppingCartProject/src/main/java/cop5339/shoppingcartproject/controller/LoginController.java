@@ -2,22 +2,21 @@ package cop5339.shoppingcartproject.controller;
 
 import cop5339.shoppingcartproject.model.Account;
 import cop5339.shoppingcartproject.model.Ecommerce;
-import cop5339.shoppingcartproject.model.User;
 import cop5339.shoppingcartproject.view.LoginView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import cop5339.shoppingcartproject.view.View;
 
 /**
  *
  * @author eliandro
  */
-public class LoginController implements ActionListener {
+public class LoginController implements ActionListener, HistoryController {
     
     private Account model;
     private LoginView view;
+    private View nextView;
 
     public LoginController(LoginView view, Account model) {
         super();
@@ -35,10 +34,21 @@ public class LoginController implements ActionListener {
             // get user logged
             this.model = app.getAccount(username, password);
             // goto next screen
-            
+            History.getInstance().goForward(view.getNextView());            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    @Override
+    public void setNextView(View view) {
+        this.nextView = view;
+    }
+
+    @Override
+    public void updateUI() {
+        view.validate();
+        view.updateUI();
+    }    
     
 }

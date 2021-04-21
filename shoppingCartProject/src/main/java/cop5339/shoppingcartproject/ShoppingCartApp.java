@@ -1,5 +1,6 @@
 package cop5339.shoppingcartproject;
 
+import cop5339.shoppingcartproject.controller.History;
 import cop5339.shoppingcartproject.controller.LoginController;
 import cop5339.shoppingcartproject.model.Account;
 import cop5339.shoppingcartproject.model.Customer;
@@ -11,8 +12,15 @@ import cop5339.shoppingcartproject.model.User;
 import cop5339.shoppingcartproject.view.InventoryView;
 import cop5339.shoppingcartproject.view.LoginView;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -47,8 +55,8 @@ public class ShoppingCartApp {
         inventory1.addProduct(new Product(2, "PlayStation Store Gift Card", "PlayStation 4 | DRM: PlayStation Network", 50), 8);
         app.addInventory(inventory1);        
         Inventory inventory2 = new Inventory((Seller) seller2.getUser());
-        inventory1.addProduct(new Product(3, "MSI Laptop i7 16GB", "MSI GL65 Leopard 10SFK-062 15.6\" FHD 144Hz 3ms Thin Bezel Gaming Laptop Intel Core i7-10750H RTX2070 16GB 512GB NVMe SSD Win 10", 1380), 20);
-        inventory1.addProduct(new Product(4, "TV OLED 65-inch", "LG OLED65CXPUA Alexa Built-in CX 65-inch 4K Smart OLED TV (2020 Model)", 1949.99), 2);
+        inventory2.addProduct(new Product(3, "MSI Laptop i7 16GB", "MSI GL65 Leopard 10SFK-062 15.6\" FHD 144Hz 3ms RTX2070 16GB", 1380), 20);
+        inventory2.addProduct(new Product(4, "TV OLED 65-inch", "LG OLED65CXPUA Alexa Built-in CX 65-inch 4K Smart OLED TV (2020 Model)", 1949.99), 2);
         app.addInventory(inventory2);
 
         // the Model in MVC:
@@ -61,17 +69,41 @@ public class ShoppingCartApp {
         // the Controller in the MVC
         LoginController loginController = new LoginController(loginView, accountModel);
         loginView.getLoginButton().addActionListener(loginController);
-
+        History.getInstance().setCurrentView(loginView);
+        loginView.setNextView(inventoryView);
+        
         // add view observer to model
 //        userModel.addEventListener(loginView);
 
         // main app frame:
         JFrame jframe = new JFrame("Shopping Cart App");
-        jframe.setLayout(new GridLayout(3, 1));
-        jframe.add(loginView);
+        jframe.setLayout(new FlowLayout(FlowLayout.CENTER));
+        // main panel
+        JPanel panel = new JPanel();
+        // scroll
+        JScrollPane jScrollPane = new JScrollPane(panel);
+        // only a configuration to the jScrollPane...
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setMinimumSize(new Dimension(400,500));
+        
+        panel.add(loginView);
+        panel.add(inventoryView);        
+        jframe.getContentPane().add(jScrollPane);
+        
+        //listen for resizes
+        jScrollPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                //jScrollPane.setSize(jframe.getSize());
+                jScrollPane.repaint();
+                jScrollPane.updateUI();
+            }
+        });
 
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setMinimumSize(new Dimension(400,500));
+        jframe.setMinimumSize(new Dimension(500,500));
+        jframe.setSize(new Dimension(500,500));
         jframe.pack();
         jframe.setVisible(true);
     }

@@ -1,15 +1,16 @@
 package cop5339.shoppingcartproject.controller;
 
-import cop5339.shoppingcartproject.view.Screen;
+import cop5339.shoppingcartproject.view.View;
+import java.awt.Component;
 
 /**
  *
  * @author eliandro
  */
 public class History {
-    private Screen before;
-    private Screen current;    
-    private Screen next;
+    private View before;
+    private View current;    
+    private View next;
     
     private static final History instance = new History();    
     public static History getInstance() {
@@ -19,14 +20,16 @@ public class History {
     private History() {
     }
     
-    public void setCurrentScreen(Screen current) {
+    public void setCurrentView(View current) {
         this.current = current;
     }
     
     public void goBack() {
         if (before != null) {
-            current.hide();
-            before.show();
+            current.setVisible(false);
+            before.setVisible(true);
+            // repaint components
+            ((Component)before).getParent().doLayout();
             next = current;
             current = before;
         }
@@ -35,16 +38,20 @@ public class History {
      * go forward to new screen and hide the predecessor screen
      * @param s 
      */
-    public void goForward(Screen s) {
-        current.hide();
-        s.show();
+    public void goForward(View s) {
+        current.setVisible(false);
+        s.setVisible(true);
+        // repaint components
+        ((Component)s).getParent().doLayout();
         before = current;
         current = s;        
     }
     public void goForward() {
         if (next != null) {
-            current.hide();
-            next.show();
+            current.setVisible(false);
+            next.setVisible(true);
+            // repaint components
+            ((Component)next).getParent().doLayout();
             before = current;
             current = next;
         }

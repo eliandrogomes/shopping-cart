@@ -7,7 +7,7 @@ import java.util.EventListener;
  *
  * @author eliandro
  */
-public class User {
+public abstract class User {
     private ArrayList<EventListener> listeners;
     private String username;
     private String password;
