@@ -1,6 +1,5 @@
 package cop5339.shoppingcartproject.model;
 
-import cop5339.shoppingcartproject.controller.ShoppingCart;
 import java.beans.Transient;
 import java.io.Serializable;
 

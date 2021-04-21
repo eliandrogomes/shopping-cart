@@ -1,4 +1,4 @@
-package cop5339.shoppingcartproject.controller;
+package cop5339.shoppingcartproject.model;
 
 import cop5339.shoppingcartproject.model.Seller;
 import cop5339.shoppingcartproject.model.Account;

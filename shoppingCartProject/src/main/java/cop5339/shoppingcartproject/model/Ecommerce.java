@@ -1,4 +1,4 @@
-package cop5339.shoppingcartproject.controller;
+package cop5339.shoppingcartproject.model;
 
 import cop5339.shoppingcartproject.model.Address;
 import cop5339.shoppingcartproject.model.Seller;
@@ -13,10 +13,12 @@ import java.util.Iterator;
  */
 public class Ecommerce implements Serializable {
     private final ArrayList<Inventory> inventories;
+    private final ArrayList<Account> accounts;
     private static final Ecommerce instance = new Ecommerce();
 
     private Ecommerce() {
         inventories = new ArrayList<>();
+        accounts = new ArrayList<>();
     }
     
     public static Ecommerce getInstance() {
@@ -25,6 +27,14 @@ public class Ecommerce implements Serializable {
     
     public void addInventory(Inventory inventory) {
         inventories.add(inventory);
+    }
+    
+    public void createAccount(Account account) {
+        accounts.add(account);
+    }
+
+    public ArrayList<Inventory> getInventories() {
+        return inventories;
     }
     
     /**
@@ -41,6 +51,29 @@ public class Ecommerce implements Serializable {
             }
         }
         return null;
+    }
+    
+    /**
+     * Process the user login
+     * @param username
+     * @param password
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    public Account getAccount(String username, String password) throws Exception {
+        Iterator<Account> it = accounts.iterator();
+        while (it.hasNext()) {
+            Account account = it.next();
+            if (account.getUser().getUsername().equals(username)) {
+                if (account.getUser().getPassword().equals(password)) {
+                    // successful login
+                    return account;
+                } else {
+                    throw new Exception("Username or passwor invalid!");
+                }
+            }
+        }
+        throw new Exception("Account not found!");
     }
     
     /**

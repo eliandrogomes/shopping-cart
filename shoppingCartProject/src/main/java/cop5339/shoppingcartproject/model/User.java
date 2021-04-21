@@ -1,14 +1,22 @@
 package cop5339.shoppingcartproject.model;
 
+import java.util.ArrayList;
+import java.util.EventListener;
+
 /**
  *
  * @author eliandro
  */
-public abstract class User {
+public class User {
+    private ArrayList<EventListener> listeners;
     private String username;
     private String password;
 
+    public User() {
+    }
+    
     public User(String username, String password) {
+        listeners = new ArrayList<EventListener>();
         this.username = username;
         this.password = password;
     }
@@ -29,5 +37,12 @@ public abstract class User {
         this.password = password;
     }
     
+    /**
+     * Add a listener (view -- observer)
+     * @param e
+     */
+    public void addEventListener(EventListener e) {
+        listeners.add(e);
+    }    
     
 }

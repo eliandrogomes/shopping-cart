@@ -1,8 +1,5 @@
-package cop5339.shoppingcartproject.controller;
+package cop5339.shoppingcartproject.model;
 
-import cop5339.shoppingcartproject.model.InventoryProduct;
-import cop5339.shoppingcartproject.model.Seller;
-import cop5339.shoppingcartproject.model.Product;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,9 +20,13 @@ public class Inventory implements Serializable {
     public Seller getSeller() {
         return seller;
     }
+
+    public ArrayList<InventoryProduct> getProducts() {
+        return products;
+    }
     
     public void addProduct(Product product, int quantity) {
-        this.products.add(new InventoryProduct(product, quantity, 0));
+        this.products.add(new InventoryProduct(seller, product, quantity, 0));
     }
     
     /**

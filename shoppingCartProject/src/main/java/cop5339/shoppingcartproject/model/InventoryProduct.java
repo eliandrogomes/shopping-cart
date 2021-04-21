@@ -1,6 +1,5 @@
 package cop5339.shoppingcartproject.model;
 
-import cop5339.shoppingcartproject.model.Product;
 import java.io.Serializable;
 
 /**
@@ -8,16 +7,26 @@ import java.io.Serializable;
  * @author eliandro
  */
 public class InventoryProduct implements Serializable {
+    private Seller seller;
     private Product product;
     private int quantity;
     private int reservedQuantity;
 
-    public InventoryProduct(Product product, int quantity, int reservedQuantity) {
+    public InventoryProduct(Seller seller, Product product, int quantity, int reservedQuantity) {
+        this.seller = seller;
         this.product = product;
         this.quantity = quantity;
         this.reservedQuantity = reservedQuantity;
     }
 
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+    
     public Product getProduct() {
         return product;
     }

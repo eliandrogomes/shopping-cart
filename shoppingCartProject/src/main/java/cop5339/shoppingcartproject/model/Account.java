@@ -20,6 +20,9 @@ public class Account implements Serializable {
         this.lastName = lastName;
     }
 
+    public Account() {
+    }
+
     public User getUser() {
         return user;
     }
