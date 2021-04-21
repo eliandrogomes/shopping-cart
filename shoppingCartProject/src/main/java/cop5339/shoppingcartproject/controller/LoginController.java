@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import cop5339.shoppingcartproject.view.View;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -33,8 +34,11 @@ public class LoginController implements ActionListener, HistoryController {
         try {
             // get user logged
             this.model = app.getAccount(username, password);
+            // add view observer to model
+            this.model.addChangeListener((ChangeListener) view.getNextView());
+            this.model.setStatus("logged");
             // goto next screen
-            History.getInstance().goForward(view.getNextView());            
+            History.getInstance().goForward(view.getNextView());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

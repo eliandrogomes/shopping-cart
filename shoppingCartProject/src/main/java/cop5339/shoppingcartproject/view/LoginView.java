@@ -1,6 +1,8 @@
 package cop5339.shoppingcartproject.view;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.EventListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,12 +29,15 @@ public class LoginView extends JPanel implements EventListener, View {
     private LoginView() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setMinimumSize(new Dimension(400, 100));
-        this.add(new JLabel("Username"));        
-        this.add(username);
-        this.add(new JLabel("Password"));        
-        this.add(password);
-        this.add(loginButton);        
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(new JLabel("Username"));
+        username.setPreferredSize(new Dimension(200, 30));
+        password.setPreferredSize(new Dimension(200, 30));
+        panel.add(username);
+        panel.add(new JLabel("Password"));        
+        panel.add(password);
+        panel.add(loginButton);        
+        this.add(panel);
     }
 
     public JTextField getUsername() {
@@ -55,6 +60,10 @@ public class LoginView extends JPanel implements EventListener, View {
     @Override
     public View getNextView() {
         return this.nextView;
+    }
+
+    @Override
+    public void update() {
     }
     
 }

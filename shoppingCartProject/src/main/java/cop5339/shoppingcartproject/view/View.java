@@ -8,4 +8,5 @@ public interface View {
     void setVisible(boolean flag);
     void setNextView(View v);
     View getNextView();
+    void update();
 }

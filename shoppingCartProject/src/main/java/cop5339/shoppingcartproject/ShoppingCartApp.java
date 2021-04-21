@@ -18,6 +18,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -72,14 +73,12 @@ public class ShoppingCartApp {
         History.getInstance().setCurrentView(loginView);
         loginView.setNextView(inventoryView);
         
-        // add view observer to model
-//        userModel.addEventListener(loginView);
-
         // main app frame:
         JFrame jframe = new JFrame("Shopping Cart App");
-        jframe.setLayout(new FlowLayout(FlowLayout.CENTER));
+        jframe.setLayout(new GridLayout(1,1));
         // main panel
         JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         // scroll
         JScrollPane jScrollPane = new JScrollPane(panel);
         // only a configuration to the jScrollPane...
@@ -96,8 +95,7 @@ public class ShoppingCartApp {
             @Override
             public void componentResized(ComponentEvent e) {
                 //jScrollPane.setSize(jframe.getSize());
-                jScrollPane.repaint();
-                jScrollPane.updateUI();
+                panel.updateUI();
             }
         });
 
