@@ -38,7 +38,7 @@ public class LoginController implements ActionListener, HistoryController {
             // get user logged
             this.model = app.getAccount(username, password);
             // verify if type account is seller or customer
-            if (this.model.getAccountType() == "seller") {
+            if (this.model.getAccountType().equals("seller")) {
                 // seller
                 this.nextView = InventoryView.getInstance();
             } else {
