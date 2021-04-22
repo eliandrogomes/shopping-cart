@@ -77,9 +77,16 @@ public class ShoppingCart implements Serializable {
     
     /**
      * Calculate the total of cart
+     * @return The total amount of cart
      */
-    public void calculate() {
-        
+    public double calculate() {
+        double total = 0;
+        Iterator<CartProduct> it = getProducts().iterator();
+        while (it.hasNext()) {
+            CartProduct cartProduct = it.next();
+            total += cartProduct.getQuantity() * cartProduct.getProduct().getUnitPrice();
+        }
+        return total;
     }
     
     /**

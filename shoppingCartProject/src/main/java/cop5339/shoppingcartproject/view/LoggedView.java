@@ -35,7 +35,16 @@ public class LoggedView extends JPanel implements ChangeListener, View {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(greeting);
-        panel.add(cartButton);        
+        panel.add(cartButton);  
+        cartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CartView cartView = CartView.getInstance();
+                cartView.setModel(model);
+                History.getInstance().goForward(cartView);
+                cartView.update();
+            }
+        });
         panel.add(logoutButton);
         logoutButton.addActionListener(new ActionListener() {
             @Override

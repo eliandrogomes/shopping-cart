@@ -1,13 +1,18 @@
 package cop5339.shoppingcartproject.view;
 
+import cop5339.shoppingcartproject.controller.History;
 import cop5339.shoppingcartproject.model.Account;
 import cop5339.shoppingcartproject.model.CartProduct;
 import cop5339.shoppingcartproject.model.Ecommerce;
-import cop5339.shoppingcartproject.model.Inventory;
-import cop5339.shoppingcartproject.model.InventoryProduct;
+import java.awt.Color;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.event.ChangeListener;
 import java.util.Iterator;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 
@@ -49,7 +54,6 @@ public class CartView extends JPanel implements ChangeListener, View {
         return this.nextView;
     }
     
-    
     @Override
     public void update() {
         if (this.model != null && this.model.getStatus().equals("logged")) {
@@ -61,7 +65,19 @@ public class CartView extends JPanel implements ChangeListener, View {
             LoggedView loggedView = LoggedView.getInstance();
             loggedView.setModel(model);
             this.add(loggedView);
-
+            
+            JLabel total = new JLabel("TOTAL: " + model.getShoppingCart().calculate());
+            this.add(total);
+            
+            JButton goBackButton = new JButton("Back");
+            goBackButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    History.getInstance().goBack();
+                }
+            });
+            this.add(goBackButton);
+            
             Iterator<CartProduct> it = model.getShoppingCart().getProducts().iterator();
             while (it.hasNext()) {
                 CartProduct cartProduct = it.next();

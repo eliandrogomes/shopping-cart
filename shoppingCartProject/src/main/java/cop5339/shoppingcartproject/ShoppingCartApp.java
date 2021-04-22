@@ -20,6 +20,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -68,13 +69,16 @@ public class ShoppingCartApp {
         // view to buyer
         BuyerView buyerView = BuyerView.getInstance();
         // view to cart
-        CartView cartProductView = CartView.getInstance();
+        CartView cartView = CartView.getInstance();
 
         // the Controller in the MVC
         LoginController loginController = new LoginController(loginView, accountModel);
         loginView.getLoginButton().addActionListener(loginController);
         History.getInstance().setCurrentView(loginView);
         //loginView.setNextView(inventoryView);
+        
+        // associate model and views
+        accountModel.addChangeListener((ChangeListener) cartView);
         
         // main app frame:
         JFrame jframe = new JFrame("Shopping Cart App");
@@ -91,7 +95,7 @@ public class ShoppingCartApp {
         
         panel.add(loginView);
         panel.add(inventoryView);    
-        panel.add(cartProductView); 
+        panel.add(cartView); 
         panel.add(buyerView); 
         jframe.getContentPane().add(jScrollPane);
         
