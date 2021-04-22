@@ -73,7 +73,8 @@ public class CartView extends JPanel implements ChangeListener, View {
             goBackButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    History.getInstance().goBack();
+                    History.getInstance().goForward(BuyerView.getInstance());
+                    BuyerView.getInstance().update();                    
                 }
             });
             this.add(goBackButton);

@@ -50,7 +50,7 @@ public class LoggedView extends JPanel implements ChangeListener, View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.setStatus("logout");
-                History.getInstance().goBack();
+                History.getInstance().goForward(LoginView.getInstance());
             }
         });
         this.add(panel);

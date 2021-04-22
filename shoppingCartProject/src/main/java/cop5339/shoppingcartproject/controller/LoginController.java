@@ -46,7 +46,6 @@ public class LoginController implements ActionListener, HistoryController {
                 this.nextView = BuyerView.getInstance();
             }
             // add view observer to model
-            this.model.removeListeners();
             this.model.addChangeListener((ChangeListener) this.nextView);
             this.model.setStatus("logged");
             // goto next screen
