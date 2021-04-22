@@ -8,16 +8,14 @@ import cop5339.shoppingcartproject.model.Ecommerce;
 import cop5339.shoppingcartproject.model.Inventory;
 import cop5339.shoppingcartproject.model.Product;
 import cop5339.shoppingcartproject.model.Seller;
-import cop5339.shoppingcartproject.model.User;
+import cop5339.shoppingcartproject.view.BuyerView;
+import cop5339.shoppingcartproject.view.CartView;
 import cop5339.shoppingcartproject.view.InventoryView;
 import cop5339.shoppingcartproject.view.LoginView;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -65,13 +63,18 @@ public class ShoppingCartApp {
         
         // the View in the MVC 
         LoginView loginView = LoginView.getInstance();
+        // view to seller
         InventoryView inventoryView = InventoryView.getInstance();
+        // view to buyer
+        BuyerView buyerView = BuyerView.getInstance();
+        // view to cart
+        CartView cartProductView = CartView.getInstance();
 
         // the Controller in the MVC
         LoginController loginController = new LoginController(loginView, accountModel);
         loginView.getLoginButton().addActionListener(loginController);
         History.getInstance().setCurrentView(loginView);
-        loginView.setNextView(inventoryView);
+        //loginView.setNextView(inventoryView);
         
         // main app frame:
         JFrame jframe = new JFrame("Shopping Cart App");
@@ -87,7 +90,9 @@ public class ShoppingCartApp {
         jScrollPane.setMinimumSize(new Dimension(400,500));
         
         panel.add(loginView);
-        panel.add(inventoryView);        
+        panel.add(inventoryView);    
+        panel.add(cartProductView); 
+        panel.add(buyerView); 
         jframe.getContentPane().add(jScrollPane);
         
         //listen for resizes

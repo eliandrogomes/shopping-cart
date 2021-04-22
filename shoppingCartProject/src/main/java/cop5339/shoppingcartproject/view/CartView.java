@@ -1,10 +1,10 @@
 package cop5339.shoppingcartproject.view;
 
 import cop5339.shoppingcartproject.model.Account;
+import cop5339.shoppingcartproject.model.CartProduct;
 import cop5339.shoppingcartproject.model.Ecommerce;
 import cop5339.shoppingcartproject.model.Inventory;
 import cop5339.shoppingcartproject.model.InventoryProduct;
-import cop5339.shoppingcartproject.model.Seller;
 import javax.swing.event.ChangeListener;
 import java.util.Iterator;
 import javax.swing.BoxLayout;
@@ -15,19 +15,20 @@ import javax.swing.event.ChangeEvent;
  * List of seller's products
  * @author eliandro
  */
-public class InventoryView extends JPanel implements ChangeListener, View {
+public class CartView extends JPanel implements ChangeListener, View {
 
     private View nextView;
     private Account model;
     
-    private static final InventoryView instance = new InventoryView();    
-    public static InventoryView getInstance() {
+    private static final CartView instance = new CartView();    
+    public static CartView getInstance() {
         return instance;
     }
     
-    private InventoryView() {
+    private CartView() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.update();
     }
 
     public Account getModel() {
@@ -60,16 +61,11 @@ public class InventoryView extends JPanel implements ChangeListener, View {
             LoggedView loggedView = LoggedView.getInstance();
             loggedView.setModel(model);
             this.add(loggedView);
-            
-            // filter seller's items 
-            Inventory inventory = app.getInventory((Seller) model.getUser());
-            Iterator<InventoryProduct> ip = inventory.getProducts().iterator();
-            while (ip.hasNext()) {
-                InventoryProduct inventoryProduct = ip.next();
-                ProductView productView = new ProductView(inventoryProduct);
-                this.add(productView);
-                inventoryProduct.removeListeners();
-                inventoryProduct.addChangeListener(productView);
+
+            Iterator<CartProduct> it = model.getShoppingCart().getProducts().iterator();
+            while (it.hasNext()) {
+                CartProduct cartProduct = it.next();
+                this.add(new CartProductView(cartProduct));
             }
         }
     }

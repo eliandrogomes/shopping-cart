@@ -1,9 +1,8 @@
 package cop5339.shoppingcartproject.controller;
 
 import cop5339.shoppingcartproject.model.Account;
-import cop5339.shoppingcartproject.model.CartProduct;
 import cop5339.shoppingcartproject.model.Ecommerce;
-import cop5339.shoppingcartproject.view.BuyerView;
+import cop5339.shoppingcartproject.model.InventoryProduct;
 import cop5339.shoppingcartproject.view.InventoryView;
 import cop5339.shoppingcartproject.view.LoginView;
 import java.awt.event.ActionEvent;
@@ -16,41 +15,29 @@ import javax.swing.event.ChangeListener;
  *
  * @author eliandro
  */
-public class LoginController implements ActionListener, HistoryController {
+public class ShoppingCartController implements ActionListener, HistoryController {
     
     private Account model;
-    private LoginView view;
+    private InventoryView view;
     private View nextView;
 
-    public LoginController(LoginView view, Account model) {
+    public ShoppingCartController(InventoryView view, Account model) {
         super();
         this.view = view;
         this.model = model;
+        // add view observer to model
+        this.model.addChangeListener(view);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String username = view.getUsername().getText();
-        String password = view.getPassword().getText();
-        
         Ecommerce app = Ecommerce.getInstance();
         try {
             // get user logged
-            this.model = app.getAccount(username, password);
-            // verify if type account is seller or customer
-            if (this.model.getAccountType() == "seller") {
-                // seller
-                this.nextView = InventoryView.getInstance();
-            } else {
-                // customer
-                this.nextView = BuyerView.getInstance();
-            }
-            // add view observer to model
-            this.model.removeListeners();
-            this.model.addChangeListener((ChangeListener) this.nextView);
-            this.model.setStatus("logged");
+            InventoryProduct inventoryProduct = (InventoryProduct) e.getSource();
+            this.model.getShoppingCart().addProduct(inventoryProduct.getProduct(), inventoryProduct.getSeller(), 1);
             // goto next screen
-            History.getInstance().goForward(this.nextView);
+            // History.getInstance().goForward(view.getNextView());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

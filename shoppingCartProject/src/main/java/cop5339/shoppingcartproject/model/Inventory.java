@@ -25,8 +25,10 @@ public class Inventory implements Serializable {
         return products;
     }
     
-    public void addProduct(Product product, int quantity) {
-        this.products.add(new InventoryProduct(seller, product, quantity, 0));
+    public InventoryProduct addProduct(Product product, int quantity) {
+        InventoryProduct inventoryProduct = new InventoryProduct(seller, product, quantity, 0);
+        this.products.add(inventoryProduct);
+        return inventoryProduct;
     }
     
     /**

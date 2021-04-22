@@ -25,15 +25,18 @@ public class LoggedView extends JPanel implements ChangeListener, View {
     private View nextView;
     private Account model; 
     
-    public LoggedView(Account model) {
+    private static final LoggedView instance = new LoggedView();    
+    public static LoggedView getInstance() {
+        return instance;
+    }
+    
+    private LoggedView() {
         super();
-        this.model = model;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(greeting);
         panel.add(cartButton);        
         panel.add(logoutButton);
-        //cartButton.addActionListener(loginController);
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -42,11 +45,11 @@ public class LoggedView extends JPanel implements ChangeListener, View {
             }
         });
         this.add(panel);
-        update();
     }
     
     public void setModel(Account model) {
         this.model = model;
+        update();
     }
     
     public JButton getCartButton() {
@@ -69,7 +72,8 @@ public class LoggedView extends JPanel implements ChangeListener, View {
     @Override
     public void update() {
         if (model != null) {
-            greeting.setText("Hi, " + model.getFirstName() + " " + model.getLastName());
+            greeting.setText("Hi, " + model.getFirstName() + " " + model.getLastName() + " [" + model.getAccountType() + "]");
+            cartButton.setEnabled(model.getAccountType().equals("customer"));
         }
     }
 

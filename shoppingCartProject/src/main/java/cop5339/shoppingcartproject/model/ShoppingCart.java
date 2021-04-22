@@ -32,11 +32,11 @@ public class ShoppingCart implements Serializable {
         InventoryProduct inventoryProduct = inventory.reserveProduct(product, quantity);
         if (inventoryProduct == null) {
             throw new Exception("Sorry, this item does not have in the inventory!");
-        }                
+        }
         products.add(new CartProduct(product, quantity));
     }
     
-    public CartProduct removeProduct(Product product, Seller seller, int quantity) {
+    public synchronized CartProduct removeProduct(Product product, Seller seller, int quantity) {
         Inventory inventory = Ecommerce.getInstance().getInventory(seller);
         Iterator<CartProduct> it = products.iterator();
         while (it.hasNext()) {
@@ -69,6 +69,10 @@ public class ShoppingCart implements Serializable {
                 item.setQuantity(quantity);
             }
         }
+    }
+
+    public ArrayList<CartProduct> getProducts() {
+        return products;
     }
     
     /**

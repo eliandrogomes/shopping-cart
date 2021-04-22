@@ -4,7 +4,7 @@ import cop5339.shoppingcartproject.model.Account;
 import cop5339.shoppingcartproject.model.Ecommerce;
 import cop5339.shoppingcartproject.model.Inventory;
 import cop5339.shoppingcartproject.model.InventoryProduct;
-import cop5339.shoppingcartproject.model.Seller;
+import cop5339.shoppingcartproject.model.ShoppingCart;
 import javax.swing.event.ChangeListener;
 import java.util.Iterator;
 import javax.swing.BoxLayout;
@@ -15,17 +15,18 @@ import javax.swing.event.ChangeEvent;
  * List of seller's products
  * @author eliandro
  */
-public class InventoryView extends JPanel implements ChangeListener, View {
+public class BuyerView extends JPanel implements ChangeListener, View {
 
     private View nextView;
     private Account model;
+    private ShoppingCart modelShoppingCart;
     
-    private static final InventoryView instance = new InventoryView();    
-    public static InventoryView getInstance() {
+    private static final BuyerView instance = new BuyerView();    
+    public static BuyerView getInstance() {
         return instance;
     }
     
-    private InventoryView() {
+    private BuyerView() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
@@ -36,6 +37,8 @@ public class InventoryView extends JPanel implements ChangeListener, View {
 
     public void setModel(Account model) {
         this.model = model;
+        // initialize shoppping cart
+        this.modelShoppingCart = new ShoppingCart(model);
     }
     
     @Override
@@ -60,23 +63,27 @@ public class InventoryView extends JPanel implements ChangeListener, View {
             LoggedView loggedView = LoggedView.getInstance();
             loggedView.setModel(model);
             this.add(loggedView);
-            
-            // filter seller's items 
-            Inventory inventory = app.getInventory((Seller) model.getUser());
-            Iterator<InventoryProduct> ip = inventory.getProducts().iterator();
-            while (ip.hasNext()) {
-                InventoryProduct inventoryProduct = ip.next();
-                ProductView productView = new ProductView(inventoryProduct);
-                this.add(productView);
-                inventoryProduct.removeListeners();
-                inventoryProduct.addChangeListener(productView);
+
+            Iterator<Inventory> it = app.getInventories().iterator();
+            while (it.hasNext()) {
+                Inventory inventory = it.next();
+                Iterator<InventoryProduct> ip = inventory.getProducts().iterator();
+                while (ip.hasNext()) {
+                    InventoryProduct inventoryProduct = ip.next();
+                    AvailableProductView availableProductView = new AvailableProductView(inventoryProduct, modelShoppingCart);
+                    this.add(availableProductView);
+                    inventoryProduct.removeListeners();
+                    inventoryProduct.addChangeListener(availableProductView);
+                }
             }
         }
     }
     
     @Override
     public void stateChanged(ChangeEvent e) {
-        setModel((Account) e.getSource());
+        if (Account.class.isInstance(e.getSource())) {
+            setModel((Account) e.getSource());
+        }
         update();
     }
     

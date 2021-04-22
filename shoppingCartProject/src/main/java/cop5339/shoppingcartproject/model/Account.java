@@ -13,6 +13,7 @@ public class Account implements Serializable {
     private ArrayList<ChangeListener> listeners;
     
     private User user;
+    private ShoppingCart shoppingCart;
     private String firstName;
     private String lastName;
     private String email;
@@ -22,6 +23,7 @@ public class Account implements Serializable {
 
     public Account(User user, String firstName, String lastName) {
         this.listeners = new ArrayList<ChangeListener>();
+        this.shoppingCart = new ShoppingCart(this);
         this.user = user;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +32,7 @@ public class Account implements Serializable {
 
     public Account() {
         this.listeners = new ArrayList<ChangeListener>();
+        this.shoppingCart = new ShoppingCart(this);
         this.status = "logout";
     }
 
@@ -81,6 +84,14 @@ public class Account implements Serializable {
         this.address = address;
     }
 
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+    
     /**
      * Update the user status. It notifies all registered views (change listeners).
      * @param status 
@@ -99,7 +110,19 @@ public class Account implements Serializable {
     }
     
     public String getAccountType() {
-        return this.user.getClass().getTypeName();
+        if (this.user != null) {
+            if (Customer.class.isInstance(this.user)) {
+                return "customer";
+            } else {
+                return "seller";
+            }            
+        } else {
+            return "";
+        }
+    }
+    
+    public void removeListeners() {
+        this.listeners = new ArrayList<ChangeListener>();
     }
     
     /**
