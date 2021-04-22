@@ -33,7 +33,8 @@ public class ShoppingCart implements Serializable {
         if (inventoryProduct == null) {
             throw new Exception("Sorry, this item does not have in the inventory!");
         }
-        products.add(new CartProduct(product, quantity));
+        //this.products.add(new CartProduct(product, quantity));
+        this.account.getShoppingCart().products.add(new CartProduct(product, quantity));
     }
     
     public synchronized CartProduct removeProduct(Product product, Seller seller, int quantity) {

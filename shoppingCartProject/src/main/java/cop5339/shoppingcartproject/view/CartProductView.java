@@ -23,8 +23,7 @@ import javax.swing.event.ChangeListener;
 public class CartProductView extends JPanel  implements ChangeListener {
     private final CartProduct model;
     private final JTextField quantity = new JTextField();
-    private final JButton checkoutButton = new JButton("Checkout");
-    private final JButton abandonButton = new JButton("Abandon the Cart");
+    
     
     public CartProductView(CartProduct model) {
         super();
@@ -45,18 +44,6 @@ public class CartProductView extends JPanel  implements ChangeListener {
         // quantity
         quantity.setText(String.valueOf(model.getQuantity()));
         this.add(quantity);
-        checkoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // @todo: checkout
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        this.add(checkoutButton);
-        this.add(abandonButton);
     }
     
     @Override

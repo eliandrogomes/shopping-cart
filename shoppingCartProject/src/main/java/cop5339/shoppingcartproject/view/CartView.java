@@ -13,6 +13,7 @@ import java.util.Iterator;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 
@@ -24,6 +25,8 @@ public class CartView extends JPanel implements ChangeListener, View {
 
     private View nextView;
     private Account model;
+    private final JButton checkoutButton = new JButton("Checkout");
+    private final JButton abandonButton = new JButton("Abandon the Cart");
     
     private static final CartView instance = new CartView();    
     public static CartView getInstance() {
@@ -84,6 +87,18 @@ public class CartView extends JPanel implements ChangeListener, View {
                 CartProduct cartProduct = it.next();
                 this.add(new CartProductView(cartProduct));
             }
+            checkoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // @todo: checkout
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        this.add(checkoutButton);
+        this.add(abandonButton);
         }
     }
     
